@@ -1,0 +1,5 @@
+
+> @pacm/version_cleaner@1.0.0 build C:\Users\Jonas F. Franke\Documents\GitHub\pacm\pkgs\version_cleaner
+> cargo build --release
+
+    Finished `release` profile [optimized] target(s) in 0.10s

@@ -1,6 +1,5 @@
 use semver::Version;
 use reqwest::Client;
-use tokio;
 
 pub async fn clean_version(version: &str) -> Result<String, Box<dyn std::error::Error>> {
     let characters_to_replace_in_version = vec!['^', '~', '>', '<', '='];

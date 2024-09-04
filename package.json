@@ -1,0 +1,10 @@
+{
+  "name": "@pacm/version_cleaner",
+  "version": "1.0.0",
+  "description": "official version_cleaner functions for the PACM package manager written in rust",
+  "scripts": {
+    "build": "cargo build --release",
+    "install": "cargo install --path . --locked"
+  },
+  "license": "Apache-2.0"
+}
