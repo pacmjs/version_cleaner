@@ -3,11 +3,8 @@
   "version": "1.0.0",
   "description": "official version_cleaner functions for the PACM package manager written in rust",
   "scripts": {
-    "build": "neon build --release",
+    "build": "cargo build --release",
     "install": "cargo add semver reqwest serde_json"
   },
-  "license": "Apache-2.0",
-  "dependencies": {
-    "neon-cli": "^0.10.1"
-  }
+  "license": "Apache-2.0"
 }
