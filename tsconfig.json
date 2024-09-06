@@ -1,17 +1,26 @@
 {
     "compilerOptions": {
-      "target": "ESNext",
-      "module": "ESNext",
-      "moduleResolution": "node",
-      "outDir": "../../dist/pkgs/version_cleaner",
-      "rootDir": "./src",
-      "strict": true,
-      "esModuleInterop": true,
-      "skipLibCheck": true,
-      "forceConsistentCasingInFileNames": true,
-      "declaration": true
+        "target": "ESNext",
+        "module": "ESNext",
+        "moduleResolution": "node",
+        "outDir": "../../dist/pkgs/version_cleaner",
+        "rootDir": "./src",
+        "strict": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+        "declaration": true,
+        "declarationMap": true,
+        "paths": {
+            "pkg/constants": ["../../dist/pkgs/constants"],
+            "pkg/version_cleaner": ["../../dist/pkgs/version_cleaner"],
+            "pkg/latest_version": ["../../dist/pkgs/latest_version"]
+        },
+        "typeRoots": [
+            "../../node_modules/@types",
+            "../../dist/pkgs"
+        ]
     },
     "include": ["src/**/*"],
     "exclude": ["node_modules", "dist"]
-  }
-  
+}
