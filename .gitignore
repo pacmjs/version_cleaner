@@ -1,3 +1,2 @@
-target
-.trubo
 node_modules
+.turbo

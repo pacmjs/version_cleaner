@@ -1,10 +1,15 @@
 {
   "name": "@pacm/version_cleaner",
   "version": "1.0.0",
-  "description": "official version_cleaner functions for the PACM package manager written in rust",
+  "main": "../../dist/pkgs/version_cleaner/index.js",
+  "description": "official version_cleaner functions for the PACM package manager",
   "scripts": {
-    "build": "cargo build --release",
-    "install": "cargo add semver reqwest serde_json"
+    "build": "tsc"
   },
-  "license": "Apache-2.0"
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "@types/node": "^22.5.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.4"
+  }
 }
