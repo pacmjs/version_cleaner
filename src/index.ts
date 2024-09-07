@@ -1,4 +1,6 @@
+// @ts-ignore: TS2307
 import { charactersToReplaceInVersion } from "../constants/index.js";
+// @ts-ignore: TS2307
 import { getLatestVersion, getLatestVersionForRange } from "../latest_version/index.js";
 import chalk from "chalk";
 import semver from "semver";
