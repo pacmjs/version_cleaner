@@ -1,15 +1,9 @@
 import { charactersToReplaceInVersion } from "../constants/index.js";
-import {
-    getLatestVersion,
-    getLatestVersionForRange,
-} from "../latest_version/index.js";
+import { getLatestVersion, getLatestVersionForRange } from "../latest_version/index.js";
 import chalk from "chalk";
 import semver from "semver";
 
-export const cleanVersion = async (
-    version: string,
-    peerDependencies?: { [key: string]: string },
-) => {
+export const cleanVersion = async (version: string, peerDependencies?: { [key: string]: string }) => {
     if (charactersToReplaceInVersion.includes(version[0])) {
         version = version.slice(1);
     }
@@ -24,10 +18,7 @@ export const cleanVersion = async (
             const latestVersion = await getLatestVersion(majorVersion);
             return latestVersion;
         } catch (error: any) {
-            console.error(
-                chalk.red(`Failed to get the latest version for ${version}:`),
-                error.message,
-            );
+            console.error(chalk.red(`Failed to get the latest version for ${version}:`), error.message);
             return version.replace(".x", "");
         }
     }
@@ -35,18 +26,10 @@ export const cleanVersion = async (
     if (/^[><=^~]/.test(version)) {
         try {
             const [packageName, range] = version.split(/(?<=^\S+)\s/);
-            const latestVersion = await getLatestVersionForRange(
-                packageName,
-                range,
-            );
+            const latestVersion = await getLatestVersionForRange(packageName, range);
             return latestVersion;
         } catch (error: any) {
-            console.error(
-                chalk.red(
-                    `Failed to get the latest version for range ${version}:`,
-                ),
-                error.message,
-            );
+            console.error(chalk.red(`Failed to get the latest version for range ${version}:`), error.message);
             return "latest";
         }
     }
@@ -64,9 +47,7 @@ export const cleanVersion = async (
             return latestVersion;
         } catch (error: any) {
             console.error(
-                chalk.red(
-                    `Failed to get the latest version for invalid version format ${version}:`,
-                ),
+                chalk.red(`Failed to get the latest version for invalid version format ${version}:`),
                 error.message,
             );
             return "latest";
