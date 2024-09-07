@@ -1,5 +1,5 @@
-import { charactersToReplaceInVersion } from "pkg/constants";
-import { getLatestVersion, getLatestVersionForRange } from "pkg/latest_version";
+import { charactersToReplaceInVersion } from "../constants/index.js";
+import { getLatestVersion, getLatestVersionForRange } from "../latest_version/index.js";
 import chalk from "chalk";
 import semver from "semver";
 
