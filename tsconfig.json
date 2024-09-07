@@ -16,10 +16,7 @@
             "pkg/version_cleaner": ["../../dist/pkgs/version_cleaner"],
             "pkg/latest_version": ["../../dist/pkgs/latest_version"]
         },
-        "typeRoots": [
-            "../../node_modules/@types",
-            "../../dist/pkgs"
-        ]
+        "typeRoots": ["../../node_modules/@types", "../../dist/pkgs"]
     },
     "include": ["src/**/*"],
     "exclude": ["node_modules", "dist"]
