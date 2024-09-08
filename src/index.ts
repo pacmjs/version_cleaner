@@ -1,11 +1,13 @@
-// @ts-ignore: TS2307
+// @ts-nocheck
 import { charactersToReplaceInVersion } from "../constants/index.js";
-// @ts-ignore: TS2307
 import { getLatestVersion, getLatestVersionForRange } from "../latest_version/index.js";
-import chalk from "chalk";
 import semver from "semver";
 
-export const cleanVersion = async (version: string, peerDependencies?: { [key: string]: string }) => {
+export const cleanVersion = async (
+    packageName: string,
+    version: string,
+    peerDependencies?: { [key: string]: string },
+) => {
     if (charactersToReplaceInVersion.includes(version[0])) {
         version = version.slice(1);
     }
@@ -17,10 +19,9 @@ export const cleanVersion = async (version: string, peerDependencies?: { [key: s
     if (version.endsWith(".x")) {
         const majorVersion = version.split(".")[0];
         try {
-            const latestVersion = await getLatestVersion(majorVersion);
-            return latestVersion;
+            const res = await getLatestVersion(majorVersion);
+            return res.latestVersion;
         } catch (error: any) {
-            console.error(chalk.red(`Failed to get the latest version for ${version}:`), error.message);
             return version.replace(".x", "");
         }
     }
@@ -28,10 +29,9 @@ export const cleanVersion = async (version: string, peerDependencies?: { [key: s
     if (/^[><=^~]/.test(version)) {
         try {
             const [packageName, range] = version.split(/(?<=^\S+)\s/);
-            const latestVersion = await getLatestVersionForRange(packageName, range);
-            return latestVersion;
+            const res = await getLatestVersionForRange(packageName, range);
+            return res.latestVersion;
         } catch (error: any) {
-            console.error(chalk.red(`Failed to get the latest version for range ${version}:`), error.message);
             return "latest";
         }
     }
@@ -48,12 +48,13 @@ export const cleanVersion = async (version: string, peerDependencies?: { [key: s
             const latestVersion = await getLatestVersion(version);
             return latestVersion;
         } catch (error: any) {
-            console.error(
-                chalk.red(`Failed to get the latest version for invalid version format ${version}:`),
-                error.message,
-            );
             return "latest";
         }
+    }
+
+    if (version == typeof null) {
+        const res = await getLatestVersion(packageName);
+        version = res.latestVersion;
     }
 
     return version;
