@@ -1,61 +1,38 @@
-// @ts-nocheck
-import { charactersToReplaceInVersion } from "../constants/index.js";
-import { getLatestVersion, getLatestVersionForRange } from "../latest_version/index.js";
-import semver from "semver";
+import axios from 'axios';
+import semver from 'semver';
+// @ts-ignore
+import { validateVersion } from '../latest_version/index.js';
 
-export const cleanVersion = async (
-    packageName: string,
-    version: string,
-    peerDependencies?: { [key: string]: string },
-) => {
-    if (charactersToReplaceInVersion.includes(version[0])) {
-        version = version.slice(1);
-    }
+interface NpmRegistryResponse {
+    'dist-tags': {
+        latest: string;
+    };
+    versions: {
+        [version: string]: any;
+    };
+}
 
-    if (version === "*") {
-        return "latest";
-    }
-
-    if (version.endsWith(".x")) {
-        const majorVersion = version.split(".")[0];
-        try {
-            const res = await getLatestVersion(majorVersion);
-            return res.latestVersion;
-        } catch (error: any) {
-            return version.replace(".x", "");
-        }
-    }
-
-    if (/^[><=^~]/.test(version)) {
-        try {
-            const [packageName, range] = version.split(/(?<=^\S+)\s/);
-            const res = await getLatestVersionForRange(packageName, range);
-            return res.latestVersion;
-        } catch (error: any) {
-            return "latest";
-        }
-    }
-
-    if (peerDependencies) {
-        const peerDepVersion = peerDependencies[version];
-        if (peerDepVersion) {
-            return peerDepVersion;
-        }
-    }
-
+const cleanVersion = async (packageName: string, version: string): Promise<string> => {
     if (!semver.valid(version)) {
-        try {
-            const latestVersion = await getLatestVersion(version);
-            return latestVersion;
-        } catch (error: any) {
-            return "latest";
+        throw new Error(`Invalid version format: ${version}`);
+    }
+
+    try {
+        await validateVersion(packageName, version);
+        return version;
+    } catch (error: any) {
+        if (error.response && error.response.status === 404) {
+            console.log(`Version ${version} does not exist for package ${packageName}. Using latest compatible version instead.`);
+            const { data } = await axios.get<NpmRegistryResponse>(`https://registry.npmjs.org/${packageName}`);
+            const versions = Object.keys(data.versions);
+            const latestCompatibleVersion = semver.maxSatisfying(versions, `<=${version}`);
+            return latestCompatibleVersion || data['dist-tags'].latest;
+        } else {
+            throw new Error(`Failed to validate version ${version} for package ${packageName}: ${error.message}`);
         }
     }
+};
 
-    if (version == typeof null) {
-        const res = await getLatestVersion(packageName);
-        version = res.latestVersion;
-    }
-
-    return version;
+export {
+    cleanVersion,
 };
